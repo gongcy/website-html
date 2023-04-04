@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Directory Index</title>
+	</head>
+	<body>
+		<h1>Directory Index</h1>
+		<ul>
+			<script>
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', '.', true);
+				xhr.onload = function() {
+					var data = xhr.responseText;
+					var parser = new DOMParser();
+					var htmlDoc = parser.parseFromString(data, 'text/html');
+					var links = htmlDoc.querySelectorAll('a');
+					links.forEach(function(link) {
+						var href = link.getAttribute('href');
+						var isDirectory = link.getAttribute('class') === 'directory';
+						if (isDirectory) {
+							var li = document.createElement('li');
+							var a = document.createElement('a');
+							a.href = href;
+							a.innerHTML = href;
+							li.appendChild(a);
+							document.getElementsByTagName('ul')[0].appendChild(li);
+						}
+					});
+				};
+				xhr.send(null);
+			</script>
+		</ul>
+	</body>
+</html>
+
